@@ -1,20 +1,20 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 import SocketContext from '../context/socket.context';
 
 
 const IncomingCallModal: React.FC= () => {
 
   const socketcontext = useContext(SocketContext);
-  
+  const navigate = useNavigate() ;
 
   console.log('incomming call model executed success');
   
 
-  const handleAccept = () => {
-    console.log("handle Accept from IncommingCallModel");
-    socketcontext?.func_callAccept();   
-  };
+  // const handleAccept = () => {
+  //   console.log("handle Accept from IncommingCallModel");
+  //   socketcontext?.func_callAccept();   
+  // };
 
   const handleReject = () => {
     socketcontext?.func_callAccept();
@@ -25,9 +25,9 @@ const IncomingCallModal: React.FC= () => {
       <div className="modal-content">
         <p>Incoming call from </p>
         <div className="button-container">
-          <Link to ='/video_call'>
-          <button onClick={handleAccept}>Accept</button>
-          </Link>
+          
+          <button onClick={()=>{socketcontext?.func_callAccept() ; socketcontext?.setpicked(true) ; navigate('/video_call')}}>Accept</button>
+        
           <Link to = '/'>
           <button onClick={handleReject}>Reject</button>
           </Link>

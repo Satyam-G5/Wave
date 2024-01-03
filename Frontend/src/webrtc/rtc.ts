@@ -84,13 +84,16 @@ class PeerService {
       await this.peer.setRemoteDescription(offer);
       const ans = await this.peer.createAnswer();
       await this.peer.setLocalDescription(new RTCSessionDescription(ans));
+      console.log("Offer created by getanser and set remote-description");
       return ans;
+
     }
   }
 
   async setLocalDescription(ans: any) {
     if (this.peer) {
       await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
+      console.log("Remote description set");
     }
   }
 
@@ -98,6 +101,8 @@ class PeerService {
     if (this.peer) {
       const offer = await this.peer.createOffer();
       await this.peer.setLocalDescription(new RTCSessionDescription(offer));
+      console.log("Offer created by getoff and set localdescription");
+      
       return offer;
     }
   }

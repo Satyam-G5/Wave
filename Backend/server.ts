@@ -5,14 +5,15 @@ import bodyParser from 'body-parser';
 import { createServer, get } from "http";
 
 import dotenv from 'dotenv';
+ 
 
-
-import user_router from "./Routes/user.routes"
+import user_router from "./Routes/user.routes"    
 import pool from './Database/postgres';
 import { log } from 'console';
-
-dotenv.config();
+import { reverse } from 'dns';
  
+dotenv.config();
+     
 const app: Express = express(); 
 const httpServer = createServer(app);
 const port = process.env.PORT || 8000;
@@ -46,6 +47,7 @@ const io = new Server(httpServer, { cors: corsOptions });
 
 var reciever : any ;
 var sender : any ;
+var sendoffer : any ;
 
 io.on("connection", (socket: Socket) => {
   console.log("User Connected -- Socket.io ", socket.id);
@@ -64,10 +66,10 @@ io.on("connection", (socket: Socket) => {
     } catch (error) {
       console.error('Error updating database:', error);
     }  
-  
+     
   });
 // **************************************************** Call Initiation ********************************************************88
-
+ 
   socket.on("user_calling",async ({ phoneid, socketid, offer }) => {
     console.log("usercalling backend : ", phoneid, socketid, offer);
 
@@ -78,45 +80,52 @@ io.on("connection", (socket: Socket) => {
     const reciever_id = getid.rows[0].socketid;
     reciever = reciever_id ;
     sender = socketid ;
+    sendoffer = offer ;
     console.log("recieverid : " , reciever_id);
-    
-    io.to(reciever_id).emit("incomming:call", { from: socketid, offer });
-    console.log("incommming:call --- INITIATED ");   
-    
-  }); 
+
+    io.to(reciever_id).emit('call_incoming');
+    console.log("Incoming Call from the caller ");
+         
+     
+  });   
  
   //  **************************************************** Call Acceptance *******************************************************************
+
+  socket.on("call_recived" , () => {
+    console.log("incommming:call --- Recieved from callee " , sender , reciever ,sendoffer);   
+    io.to(reciever).emit("incomming:call", { from: sender, sendoffer });
+  })
 
   socket.on("call:accepted_res", ({ ans }) => {
     console.log("Call Accepted true");
     
     io.to(sender).emit("call:accepted", { from: reciever, ans }); 
     console.log("Answer send to caller : " , ans);
-     
-  });              
+       
+  });                
             
- 
+  
 // ************************************************ Negotiation Needed **********************************************************
  
  
   socket.on("peer:nego:needed", ({ offer }) => {
-    console.log("peer:nego:needed executed success : ", offer);
     io.to(reciever).emit("peer:nego:needed", { from: sender, offer }); 
-  }); 
+    console.log("peer:nego:needed executed success : ", offer);
+  });   
  
   socket.on("peer:nego:done", ({ ans }) => {
     console.log("peer:nego:done", ans);
     io.to(sender).emit("peer:nego:final", { from: reciever, ans }); 
-  });  
-   
-  socket.on("event_complete" , ()=>{  
-    socket.emit("Finall_Call")     
+  });   
+    
+  socket.on("eventcomplete" , ()=>{    
+    socket.emit("Finall_Call")       
     console.log("********** Final Call Triggered ***********");
-       
+        
   }) 
-  
+       
   // socket.on('disconnect', () => {
   //   users = users.filter(user => user.socketId !== socket.id);
   //   io.emit('getUsers', users);
   // });  
-});   
+});    
