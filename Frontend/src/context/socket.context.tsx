@@ -141,7 +141,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     await PeerService.setLocalDescription(ans);
     console.log("Call Accepted! from : ", from);
     socket.emit("event_complete");
-    // sendStreams()
   }, [])
 
   const sendStreams = useCallback(async () => {
@@ -160,24 +159,25 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
   }, [localStream]);
 
-  const finalstreams = useCallback(async () => {
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((UsersStream) => {
-      setLocalStream(UsersStream)
-      // UsersStream.getTracks().forEach((track: any) => {
-      //     peer.peer.addTrack(track, UsersStream)
-      // })
+  // const finalstreams = useCallback(async () => {
+  //   navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((UsersStream) => {
+  //     setLocalStream(UsersStream)
+  //     // UsersStream.getTracks().forEach((track: any) => {
+  //     //     peer.peer.addTrack(track, UsersStream)
+  //     // })
 
-      for (const track of UsersStream.getTracks()) {
-        console.log("final Stream Running ");
-        PeerService.peer.addTrack(track, UsersStream)
-      }
-    })
-  }, [])
+  //     for (const track of UsersStream.getTracks()) {
+  //       console.log("final Stream Running ");
+  //       PeerService.peer.addTrack(track, UsersStream)
+  //     }
+  //   })
+  // }, [])
 
 
 
   const Start_Final = () => {
-    finalstreams();
+    // finalstreams();
+    sendStreams() ;
     setStartStream(true);
     console.log("*************** All streams Started *****************");
 
@@ -200,8 +200,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const handleNegoNeedFinal = async ({ ans }: { ans: RTCSessionDescriptionInit }) => {
     await PeerService.setLocalDescription(ans)
     socket?.emit("event_complete");
-    sendStreams() ;
-
   };
 
   useEffect(() => {
@@ -224,7 +222,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     console.log("Track event triggered ");
 
 
-  }, [sendStreams, finalstreams]);
+  }, [sendStreams]);
 
 
   // ******************************** Socket Calls **************************************
