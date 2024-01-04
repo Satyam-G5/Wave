@@ -75,23 +75,23 @@ const signIn: React.FC = () => {
     console.log(data);
   };
   return (
-    <div className='flex justify-center items-center min-h-screen  bg-custom'>
-      <form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit} >
-      <p className="flex justify-center items-center font-semibold text-2xl mb-4">Please login to your account</p>
+    <div className='flex md:flex md:justify-center md:items-center min-h-screen '>
+      <form className="mt-60 md:space-y-6" action="#" method="POST" onSubmit={handleSubmit} >
+      <p className=" flex justify-center items-center font-semibold text-2xl  mb-4">Please login to your account</p>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium leading-6 text-black">Email address</label>
-          <div className="mt-2">
-            <input onChange={handleChange} id="email" name="email" type="email" required className="block w-full p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6" />
+          <label htmlFor="email" className="block md:mt-1 mt-24 ml-4 text-sm font-medium leading-6 text-black">Email address</label>
+          <div className="mt-4 ">
+            <input onChange={handleChange} id="email" name="email" type="email" required className="block w-full p-2 ml-4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6" />
           </div>
         </div>
 
         <div>
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="block text-sm font-medium leading-6 text-black">Password</label>
+            <label htmlFor="password" className="block md:mt-1 mt-16 ml-4 text-sm font-medium leading-6 text-black">Password</label>
 
           </div>
-          <div className="mt-2">
-            <input onChange={handleChange} id="password" name="password" type="password" required className="block p-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6" />
+          <div className="mt-4">
+            <input onChange={handleChange} id="password" name="password" type="password" required className="block p-2 ml-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6" />
           </div>
         </div>
         <div className="mb-12 pb-1 pt-1 text-center">

@@ -74,20 +74,24 @@ io.on("connection", (socket: Socket) => {
     console.log("usercalling backend : ", phoneid, socketid, offer);
 
     const getid = await pool.query(`SELECT socketID FROM users WHERE phoneno = ${phoneid} `);
+    const getName = await pool.query(`SELECT Firstname FROM users WHERE socketID = '${socketid}' `);
     console.log("Getid ---> : ", getid.rows);
+    console.log("GetName ---> : " ,getName.rows);
+    
     console.log("No of rows updated : ", getid.rowCount);
     
     const reciever_id = getid.rows[0].socketid;
+    const Name = getName.rows[0].firstname;
     reciever = reciever_id ;
-    sender = socketid ;
+    sender = socketid ; 
     sendoffer = offer ;
     console.log("recieverid : " , reciever_id);
 
-    io.to(reciever_id).emit('call_incoming');
-    console.log("Incoming Call from the caller ");
+    io.to(reciever_id).emit('call_incoming' , Name);
+    console.log("Incoming Call from the caller "); 
          
      
-  });   
+  });    
  
   //  **************************************************** Call Acceptance *******************************************************************
 
@@ -101,7 +105,7 @@ io.on("connection", (socket: Socket) => {
     
     io.to(sender).emit("call:accepted", { from: reciever, ans }); 
     console.log("Answer send to caller : " , ans);
-       
+              
   });                
             
   

@@ -12,9 +12,13 @@ interface SocketContextType {
   callAccept: boolean | undefined;
   showIncomingCallModal: any;
   picked : boolean | undefined;
-  setpicked : any ;
+  setpicked : any;
+  name : string ;
+  setName : any ;
+  Callphone : any ;
+  setCallphone : any ;
   func_callAccept: () => void;
-  calling : () => void ;
+  calling : (Name : any) => void;
   handleCallUser: (s_id: any) => void;
   addsocket: () => void;
   toggleIncomingCallModal: () => void;
@@ -31,7 +35,6 @@ interface AppProviderProps {
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
 
-  // const [socket, setSocket] = useState<Socket>();
   const [socketid, setSocketid] = useState<string>();
   const [remoteSocketId, setRemoteSocketId] = useState<string | null>(null);
   const [localStream, setLocalStream] = useState<MediaStream>();
@@ -39,8 +42,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [showIncomingCallModal, setShowIncomingCallModal] = useState(false);
   const [callAccept, setCallAccept] = useState(false);
   const [picked , setpicked] = useState<boolean>();
+  const [name , setName] = useState<string>("")
   const [call , setCall] = useState<boolean>();
-  const [startstream, setStartStream] = useState(false);
+  const [Callphone , setCallphone] = useState<any>();
+
 
   const toggleIncomingCallModal = () => {
     setShowIncomingCallModal((prev) => !prev);
@@ -86,9 +91,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setCallAccept(true)   
 
   }
-
-  function calling () {
+ 
+  function calling (Name : any) {
     toggleIncomingCallModal();
+    setName(Name);
   }
 
 
@@ -131,21 +137,29 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     });
     setLocalStream(stream);
 
-    for (const track of localStream?.getTracks() || []) {
-      console.log("Send Stream Function Working ");
+       for (const track of localStream?.getTracks() || []) {
+          PeerService.peer.addTrack(track, localStream);
+          console.log("send streams called");
 
-      // Check if the track is not already added
-      if (!PeerService.peer.getSenders().some((sender: any) => sender.track === track)) {
-        PeerService.peer.addTrack(track, localStream);
       }
-    }
+
+    // for (const track of localStream?.getTracks() || []) {
+    //   console.log("Send Stream Function Working ");
+
+    //   // Check if the track is not already added
+    //   if (!PeerService.peer.getSenders().some((sender: any) => sender.track === track)) {
+    //     PeerService.peer.addTrack(track, localStream);
+    //   }
+    // }
+
+    
+
   }, [localStream]);
 
 
   const Start_Final = () => {
     sendStreams() ;
-    setStartStream(true);
-    console.log("*************** All streams Started *****************");
+    // console.log("*************** All streams Started *****************");
 
   }
 
@@ -155,45 +169,41 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   async function handleNegoNeeded () {
     if(call == true){
       const offer = await PeerService.getOffer();
-      console.log("HandleNegoNeeded Triggered");
+      // console.log("HandleNegoNeeded Triggered");
       socket.emit("peer:nego:needed", { offer, to: remoteSocketId });
     }else{
-      console.log("error else condition executed");
-      
+      console.log("error else condition executed");     
     }
   }
 
   async function handleNegoNeedIncoming  ({ from, offer }: { from: string; offer: RTCSessionDescriptionInit }) {
       const ans = await PeerService.getAnswer(offer);
-      console.log("handleNegoNeedIncoming Triggered");
-      sendStreams() ;
-      
+      // console.log("handleNegoNeedIncoming Triggered");
+      sendStreams();
       socket.emit("peer:nego:done", { to: from, ans });
     }
 
+
   async function handleNegoNeedFinal({ ans }: { ans: RTCSessionDescriptionInit }) {
     try {
-      
       console.log("handleNegoNeedFinal Triggered ");
 
       await PeerService.setLocalDescription(ans).then(()=>{
         socket.emit("eventcomplete");
-        sendStreams() ;
       })
 
     } catch (error) {
       console.log("The error in Final Nego ", error);
-      
     }
   };
 
   useEffect(() => {
     PeerService.peer.addEventListener("negotiationneeded", handleNegoNeeded);
-      console.log("UseEffect of negotiationneed triggered ");
+      // console.log("UseEffect of negotiationneed triggered ");
       
     return () => {
       PeerService.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
-      console.log("Negotiation need removed event ");
+      // console.log("Negotiation need removed event ");
     };
   }, [handleNegoNeeded]);
 
@@ -202,14 +212,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
     PeerService.peer.addEventListener("track", async (ev: any) => {
       const [remoteStream] = await ev.streams;
-      console.log("Tracks Incomming !!", remoteStream);
+      // console.log("Tracks Incomming !!", remoteStream);
       setRemoteStream(remoteStream);
     });
 
-    console.log("Track event triggered ");
-
-
-  }, [sendStreams]);
+  }, []);
 
 
   // ******************************** Socket Calls **************************************
@@ -255,6 +262,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     showIncomingCallModal,
     callAccept,
     picked,
+    name , 
+    Callphone,
+    setCallphone,
+    setName ,
     setpicked,
     calling ,
     func_callAccept,

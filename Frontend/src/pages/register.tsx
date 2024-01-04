@@ -76,7 +76,7 @@ const register : React.FC= () => {
        <div className=" w-md  p-8 rounded-md">
                 <h2 className="text-4xl underline text-center font-semibold mb-10">Registration Form</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-2 gap-x-24 gap-y-12 mt-12">
+                    <div className="md:grid md:grid-cols-2 md:gap-x-24 md:gap-y-12 flex flex-col gap-y-8 mt-12">
                         <div className='flex flex-row justify-around'>
                             <label htmlFor="firstname" className="block text-sm font-medium mt-2">
                                First Name
@@ -154,14 +154,14 @@ const register : React.FC= () => {
                     </div>
                     <button
                         type="submit"
-                        className="ml-44 h-10 mt-4 w-80 text-black hover:text-white hover:bg-black font-semibold border-2 rounded-full border-black"
+                        className="md:ml-44 h-10 mt-4 w-80 text-black hover:text-white hover:bg-black font-semibold border-2 rounded-full border-black"
                         onClick={saveuser}
                     >
                         
                         Register
     
                     </button>
-                    <div className="flex items-center justify-between pb-6">
+                    <div className="flex items-center mt-6 justify-between pb-6">
                           <p className="mb-0 mr-2">Already have an account?</p>
                           <button
                             type="button"

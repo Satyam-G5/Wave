@@ -6,6 +6,7 @@ interface AppContextType {
     loginState: boolean | undefined;
     token: string | undefined;
     newuser : any ;
+    Name :any;
     changeLoginState: (login: boolean) => void;
     changeToken: (newtoken: string) => void;
     getuser_details: () => void;
@@ -39,6 +40,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     const [loginState, setLoginState] = useState<boolean | undefined>();
     const [token, setToken] = useState<string | undefined>();
     const [newuser, setNewuser] = useState<userType>()
+    const [Name , setName] = useState<string>('')
    
 
 
@@ -98,6 +100,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     useEffect(() => {  /// take care of the login-user and token storage 
         if (newuser) {
             localStorage.setItem('newuser', JSON.stringify(newuser));
+            setName(newuser.firstname)
         }
         if (token !== undefined) {
             localStorage.setItem('token', JSON.stringify(token));
@@ -112,6 +115,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         loginState,
         token,
         newuser,
+        Name,
         changeLoginState,
         changeToken,
         getuser_details,
