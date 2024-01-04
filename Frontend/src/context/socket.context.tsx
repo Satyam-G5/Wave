@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useState, useContext, useEffect, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import PeerService from "../webrtc/rtc";
-const socket = io('http://localhost:8000');
+const socket = io('https://wave-webrtc.onrender.com');
 
 
 interface SocketContextType {

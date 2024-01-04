@@ -29,7 +29,7 @@ const register : React.FC= () => {
         const {firstname , lastname , phone_no , email ,password} = formData
         try {
             console.log("saveuser function called with data:", formData);
-            const response = await fetch("/add_user" , {
+            const response = await fetch("https://wave-webrtc.onrender.com"+"/add_user" , {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'

@@ -9,8 +9,6 @@ import dotenv from 'dotenv';
 
 import user_router from "./Routes/user.routes"    
 import pool from './Database/postgres';
-import { log } from 'console';
-import { reverse } from 'dns';
  
 dotenv.config();
      
@@ -19,7 +17,7 @@ const httpServer = createServer(app);
 const port = process.env.PORT || 8000;
 
 const corsOptions = { 
-  origin: '*',
+  origin: 'wave-ecru.vercel.app',
   methods: ['GET', 'POST'],
 }; 
 

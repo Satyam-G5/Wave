@@ -57,7 +57,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
             try {
                 
 
-                const response = await fetch("/get_user", {
+                const response = await fetch("https://wave-webrtc.onrender.com"+"/get_user", {
                     method: "GET",
                     headers: {
                         'content-type': 'application/json',

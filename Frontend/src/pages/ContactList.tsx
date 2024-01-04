@@ -31,7 +31,7 @@ const ContactList: React.FC = () => {
 
   const all_users = async () => {
     try {
-      const response = await fetch("/all_user", {
+      const response = await fetch("https://wave-webrtc.onrender.com"+"/all_user", {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
