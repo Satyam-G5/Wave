@@ -17,12 +17,11 @@ const httpServer = createServer(app);
 const port = process.env.PORT || 8000;
 
 const corsOptions = { 
-  origin: 'wave-ecru.vercel.app',
+  origin: 'https://wave-ecru.vercel.app',
   methods: ['GET', 'POST'],
 }; 
 
-app.use(cors(
-  corsOptions));
+app.use(cors(corsOptions));
  
 app.use(express.json());
 app.use(bodyParser.json());
