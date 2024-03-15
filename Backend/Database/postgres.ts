@@ -12,7 +12,7 @@ dotenv.config()
 // });
 
 const dblocal = `postgresql://${process.env.PGLOCAL_USER}:${process.env.PGLOCAL_PASSWORD}@${process.env.PGLOCAL_HOST}:${process.env.PGLOCAL_PORT}/${process.env.PGLOCAL_DATABASE}`
-const dbproduction ="postgres://wave_2a7r_user:0YNUue3cQUE6939JBnK5trvtmpJU3OUY@dpg-cmbu9pmn7f5s7393gbc0-a.oregon-postgres.render.com/wave_2a7r"
+const dbproduction ="postgres://aamiwuwh:Nzue7fgDpNB2XU7FtxPFd2OowHkPWGPB@floppy.db.elephantsql.com/aamiwuwh"
 
 
 const pool = new Pool({
